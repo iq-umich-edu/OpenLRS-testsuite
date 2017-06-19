@@ -1,0 +1,6 @@
+{
+  "hostname": "your-openlrs-host.local",
+  "protocol": "https",
+  "port": 443
+}
+
