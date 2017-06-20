@@ -5,16 +5,17 @@
 var assert = require('assert'),
     request = require('request'),
     fs = require('fs'),
+    url = require('url'),
     uriFile = fs.readFileSync('site-config/uri.json', {'encoding':'utf8'}),
     uriObj = JSON.parse(uriFile),
-    uri = uriObj.protocol + '://' + uriObj.hostname + ':' + uriObj.port + '/';
+    openLrsUri = url.format(uriObj);
  
 /******************************************************************************
  *    FUNCTIONS
  ******************************************************************************
  */
 function test01() {
-  var opts = { 'strictSSL': false, uri: uri },
+  var opts = { 'strictSSL': false, uri: openLrsUri },
       expectedCode = 200,
       expectedBodyRe = /[>]Version:\s/;
 
@@ -33,7 +34,7 @@ function test01() {
 
 function test02() {
   var opts = { 'strictSSL': false, 
-          uri: uri + 'caliper/about' },
+          uri: openLrsUri + '/caliper/about' },
       expectedCode = 200,
       jsonRes;
 
@@ -53,7 +54,7 @@ function test02() {
 
 function test03() {
   var opts = { 'strictSSL': false, 
-          uri: uri + 'caliper',
+          uri: openLrsUri + '/caliper',
           header: { 'Accept': 'application/json' } },
       expectedCode = 401,
       jsonRes;
@@ -77,6 +78,7 @@ function test03() {
  *    MAIN LOGIC
  ******************************************************************************
  */
+console.log(openLrsUri);
 test01();
 test02();
 test03();
